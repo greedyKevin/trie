@@ -36,12 +36,16 @@ public class TrieTree {
 
             if (current.children != null && current.children.containsKey(c)) {
                 current = current.children.get(c);
+                // 设置flag
+                if (i == array.length - 1){
+                    current.isString = true;
+                }
                 continue;
             }
 
             Node node = new Node(c, false);
             node.parent = current;
-
+            // 设置flag
             if (i == array.length - 1) {
                 node.isString = true;
             }
@@ -123,7 +127,7 @@ public class TrieTree {
             result.append(c);
 
             if (current.isString) {
-                return result.toString();
+                break;
             }
         }
         return result.toString();
@@ -146,6 +150,7 @@ public class TrieTree {
 
         Node current = root;
 
+        // 找到最后的节点
         for (char c : array) {
             if (!current.children.containsKey(c)) {
                 return;
@@ -153,9 +158,10 @@ public class TrieTree {
 
             current = current.children.get(c);
         }
-
+        // 下面还有节点
         if(current.children != null){
             current.isString = false;
+            this.size--;
             return;
         }
 
@@ -163,11 +169,12 @@ public class TrieTree {
             char c = current.val;
             current  = current.parent;
             current.children.remove(c);
-
+            // 如果父子点还有其他节点 或者 是字符串
             if(current.children.size() != 0 || current.isString){
                 break;
             }
         }
+        this.size--;
     }
 
 
